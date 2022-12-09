@@ -6,34 +6,51 @@ class GildedRose(object):
         self.items = items
 
     def update_quality(self):
+
         for item in self.items:
-            if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
-                if item.quality > 0:
-                    if item.name != "Sulfuras, Hand of Ragnaros":
-                        item.quality = item.quality - 1
-            else:
-                if item.quality < 50:
-                    item.quality = item.quality + 1
-                    if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                        if item.sell_in < 11:
-                            if item.quality < 50:
-                                item.quality = item.quality + 1
-                        if item.sell_in < 6:
-                            if item.quality < 50:
-                                item.quality = item.quality + 1
             if item.name != "Sulfuras, Hand of Ragnaros":
-                item.sell_in = item.sell_in - 1
-            if item.sell_in < 0:
-                if item.name != "Aged Brie":
-                    if item.name != "Backstage passes to a TAFKAL80ETC concert":
-                        if item.quality > 0:
-                            if item.name != "Sulfuras, Hand of Ragnaros":
-                                item.quality = item.quality - 1
-                    else:
-                        item.quality = item.quality - item.quality
-                else:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
+                item.sell_in -= 1
+
+            if item.name == "Aged brie":
+                self.age_brie_funtion(item)
+            elif item.name == "Backstage passes to a TAFKAL80ETC concert":
+                self.backstage_funtion(item)
+            elif item.name == "Conjured Mana Cake":
+                self.conjured_funtion(item)
+            elif item.name != "Sulfuras, Hand of Ragnaros":
+                self.common_funtion(item)
+
+            if item.quality > 50:
+                item.quality = 50
+
+            if item.quality < 0:
+                item.quality = 0
+
+    def age_brie_funtion(self, item):
+        if item.sell_in < 0:
+            item.quality += 2
+        else:
+            item.quality += 1
+
+    def backstage_funtion(self, item):
+        if item.sell_in < 0:
+            item.quality = 0
+        elif item.sell_in <= 5:
+            item.quality += 3
+        elif item.sell_in <= 10:
+            item.quality += 2
+        else:
+            item.quality += 1
+
+    def conjured_funtion(self, item):
+        item.quality -= 2
+
+    def common_funtion(self, item):
+
+        if item.sell_in < 0:
+            item.quality -= 2
+        else:
+            item.quality -= 1
 
 
 class Item:
